@@ -1,9 +1,10 @@
 This repository contains files related to the "Science of the Slam" workshop for the Triple Helix project at RPI.
-Explain Triple Helix and also CDST.
-To fully utilize this repo you will also need an Arduino and to build the photogate equipment described on the CDST website (coming soon).
+Triple Helix is an NSF-funded interdisciplinary science project that allows collaboration between graduate students and academics and local students and/or community members
+in addressing local issues related to health, environment, poverty, crime, information access, and more.
 
+To fully utilize this repo you will also need an Arduino and to build the photogate equipment described on the CDST website (https://community.csdt.rpi.edu/cms/application-contexts/diy-sports-science-lab/diyphotogate/)
 
-==TO USE THE PROGRAM
+==TO USE THE PROGRAM==
 
 1.) Use the Arduino IDE to load the analogread.ino program in this repo onto your Arduino.
 
