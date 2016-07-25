@@ -19,6 +19,9 @@ jumping = False #boolean variable that stores whether or not somebody is jumping
 timekeeper = 0 #timekeeping variable.
 jumpheight = 0 #variable to store calculated jump height
 
+#variable for keeping track of how fast measurements can come in
+oldtime = 0.0
+
 #initialize plot and plot for the first time
 plt.ion()
 plt.plot(data)
@@ -34,15 +37,16 @@ while True:
 		state = float(arduino.readline())/205 #division by 205 should convert arduino analog reading into units of volts
 		if state>3 and jumping == False:
 			jumping = True
-			jumpup = timekeeper
+			jumpup = time.time()
 		if state<=3 and jumping == True:
 			jumping = False
-			jumpdown = timekeeper
+			jumpdown = time.time()
 			airtime = jumpdown - jumpup
-			jumpheight = 9.81*airtime*airtime/8 #use kinematics formulat to calculate jump height based on airtime
+			jumpheight = 9.81*airtime*airtime/8 #use kinematics formula to calculate jump height based on airtime
 		data.append(state)
 		print state
-		timekeeper = timekeeper + 0.1
+		print("Time: "+str(time.time()-oldtime))
+		oldtime = time.time()
 	except:
 		pass
 	# route to scroll the graph by discarding the oldest data point before redrawing
