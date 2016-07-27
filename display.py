@@ -26,8 +26,8 @@ oldtime = 0.0
 plt.ion()
 plt.plot(data)
 plt.axis([0, 20, 0, 5])
-plt.ylabel('Jump Plates')
-plt.legend(['Airtime: '+str(airtime)+'\n Jumping: '+str(jumping)+'\n Jump Height:'+str(jumpheight)+'m'])
+plt.ylabel('Photogate Voltage')
+plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
 
 #plotting loop
 while True:
@@ -56,7 +56,7 @@ while True:
 		plt.axis([0, 20, 0, 5])
 		plt.ylabel('Jump Plates')
 		plt.plot(data)
-		plt.legend(['Airtime: '+str(airtime)+'\n Jumping: '+str(jumping)+'\n Jump Height:'+str(jumpheight)+'m'])
+		plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
 	plt.draw()
 
 
