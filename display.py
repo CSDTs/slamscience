@@ -22,6 +22,9 @@ jumpheight = 0 #variable to store calculated jump height
 #variable for keeping track of how fast measurements can come in
 oldtime = 0.0
 
+#y'know
+lastgraph = 0.0
+
 #initialize plot and plot for the first time
 plt.ion()
 plt.plot(data)
@@ -31,7 +34,6 @@ plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumph
 
 #plotting loop
 while True:
-	plt.plot(data)
 	print(arduino.readline())
 	try:
 		state = float(arduino.readline())/205 #division by 205 should convert arduino analog reading into units of volts
@@ -44,20 +46,28 @@ while True:
 			airtime = jumpdown - jumpup
 			jumpheight = 9.81*airtime*airtime/8 #use kinematics formula to calculate jump height based on airtime
 		data.append(state)
-		print state
-		print("Time: "+str(time.time()-oldtime))
-		oldtime = time.time()
 	except:
 		pass
-	# route to scroll the graph by discarding the oldest data point before redrawing
+		print("DATA ACQUISITION FAIL!")
 	if len(data)>20:
+		# route to scroll the graph by discarding the oldest data point before redrawing
 		data.pop(0)
+		#plt.clf()
+		#plt.axis([0, 20, 0, 5])
+		#plt.ylabel('Jump Plates')
+		#plt.plot(data)
+		#plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
+	else:
+		plt.plot(data)
+	#plt.draw()
+	print state
+	if time.time()-lastgraph > 0.15:
 		plt.clf()
 		plt.axis([0, 20, 0, 5])
 		plt.ylabel('Jump Plates')
 		plt.plot(data)
 		plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
-	plt.draw()
-
-
-
+		lastgraph = time.time()
+		plt.draw()
+	print("Time since last data point: "+str(time.time()-oldtime))
+	oldtime = time.time()
