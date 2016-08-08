@@ -7,9 +7,28 @@ import matplotlib #for plotting
 import numpy as np #for plotting
 import matplotlib.pyplot as plt #for plotting
 import matplotlib.patches as mpatches #used for drawing the legend on the graphs
+import listports
+import sys
+
+print("Checking to see what COM ports are available...")
+devices = listports.serial_ports()
+print(devices)
+for dev in devices:
+	print(dev)
 
 #starting a serial connection with the arduino
-arduino = serial.Serial('/dev/ttyACM0', 9600)
+try:
+	for dev in devices:
+		print("trying "+dev)
+		try:
+			arduino = serial.Serial(dev, 9600)
+			print("Connected to "+dev)
+			break
+		except:
+			pass
+except:
+	print("Could not connect to Arduino.")
+	sys.exit()
 
 data = [] #will hold all arduino data points
 airtime = 0 #variable that stores the jump time
