@@ -37,6 +37,7 @@ jumpdown = 0 #variable that stores the last time "jumping" became false
 jumping = False #boolean variable that stores whether or not somebody is jumping
 timekeeper = 0 #timekeeping variable.
 jumpheight = 0 #variable to store calculated jump height
+aligned = False #variable to keep track of whether initial alignment has happened.
 
 #variable for keeping track of how fast measurements can come in
 oldtime = 0.0
@@ -47,9 +48,9 @@ lastgraph = 0.0
 #initialize plot and plot for the first time
 plt.ion()
 plt.plot(data)
-plt.axis([0, 20, 0, 5])
+plt.axis([0, 80, 0, 5])
 plt.ylabel('Photogate Voltage')
-plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
+plt.legend(['Please align laser.'])
 
 #plotting loop
 while True:
@@ -58,6 +59,7 @@ while True:
 		state = float(arduino.readline())/205 #division by 205 should convert arduino analog reading into units of volts
 		if state>3 and jumping == False:
 			jumping = True
+			aligned = True
 			jumpup = time.time()
 		if state<=3 and jumping == True:
 			jumping = False
@@ -68,7 +70,7 @@ while True:
 	except:
 		pass
 		print("DATA ACQUISITION FAIL!")
-	if len(data)>20:
+	if len(data)>80:
 		# route to scroll the graph by discarding the oldest data point before redrawing
 		data.pop(0)
 		#plt.clf()
@@ -82,10 +84,13 @@ while True:
 	print state
 	if time.time()-lastgraph > 0.15:
 		plt.clf()
-		plt.axis([0, 20, 0, 5])
+		plt.axis([0, 80, 0, 5])
 		plt.ylabel('Jump Plates')
 		plt.plot(data)
-		plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
+		if aligned == True:
+			plt.legend(['Airtime: '+str(round(airtime,3))+'s\n Jump Height:'+str(round(jumpheight,3))+'m'])
+		else:
+			plt.legend(['Please align the laser with the receiver.'])
 		lastgraph = time.time()
 		plt.draw()
 	print("Time since last data point: "+str(time.time()-oldtime))
