@@ -4,9 +4,7 @@
 import serial #PySerial library for interfacing with the Arduino
 import time
 import matplotlib #for plotting
-import numpy as np #for plotting
 import matplotlib.pyplot as plt #for plotting
-import matplotlib.patches as mpatches #used for drawing the legend on the graphs
 import listports
 import sys
 
@@ -48,7 +46,7 @@ lastgraph = 0.0
 #initialize plot and plot for the first time
 plt.ion()
 plt.plot(data)
-plt.axis([0, 80, 0, 5])
+plt.axis([0, 50, 0, 5])
 plt.ylabel('Photogate Voltage')
 plt.legend(['Please align laser.'])
 
@@ -70,7 +68,7 @@ while True:
 	except:
 		pass
 		print("DATA ACQUISITION FAIL!")
-	if len(data)>80:
+	if len(data)>50:
 		# route to scroll the graph by discarding the oldest data point before redrawing
 		data.pop(0)
 		#plt.clf()
@@ -81,10 +79,10 @@ while True:
 	else:
 		plt.plot(data)
 	#plt.draw()
-	print state
+	print(state)
 	if time.time()-lastgraph > 0.15:
 		plt.clf()
-		plt.axis([0, 80, 0, 5])
+		plt.axis([0, 50, 0, 5])
 		plt.ylabel('Jump Plates')
 		plt.plot(data)
 		if aligned == True:
