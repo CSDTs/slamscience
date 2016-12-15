@@ -90,6 +90,7 @@ while True:
 		else:
 			plt.legend(['Please align the laser with the receiver.'])
 		lastgraph = time.time()
-		plt.draw()
+		#plt.draw()
+		plt.get_current_fig_manager().canvas.draw()
 	print("Time since last data point: "+str(time.time()-oldtime))
 	oldtime = time.time()
