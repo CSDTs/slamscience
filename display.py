@@ -10,13 +10,29 @@ import sys
 print("Checking to see what COM ports are available...")
 file = open('ports.txt', 'r')
 device = file.read()
+device = device.replace('\n', '')
 dlist = str.split(device," ")
+print(dlist)
+print(len(dlist))
+trunclist = []
+for i in range(0, len(dlist)-1):
+	print(dlist[i])
+	if len(dlist[i])>3:
+		trunclist.append(dlist[i])
+		print('removed')
 device = dlist[0]
+print(trunclist)
 
 #starting a serial connection with the arduino
 try:
-	ser = serial.Serial(device, 9600)
-	print("Connected to "+device)
+	for dev in trunclist:
+		print("trying "+dev)
+		try:
+			ser = serial.Serial(dev, 9600)
+			print("Connected to "+dev)
+			break
+		except:
+			pass
 except:
 	print("Could not connect to Arduino.")
 	sys.exit()
