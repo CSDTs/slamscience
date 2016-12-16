@@ -5,25 +5,18 @@ import serial #PySerial library for interfacing with the Arduino
 import time
 import matplotlib #for plotting
 import matplotlib.pyplot as plt #for plotting
-import listports
 import sys
 
 print("Checking to see what COM ports are available...")
-devices = listports.serial_ports()
-print(devices)
-for dev in devices:
-	print(dev)
+file = open('ports.txt', 'r')
+device = file.read()
+dlist = str.split(device," ")
+device = dlist[0]
 
 #starting a serial connection with the arduino
 try:
-	for dev in devices:
-		print("trying "+dev)
-		try:
-			arduino = serial.Serial(dev, 9600)
-			print("Connected to "+dev)
-			break
-		except:
-			pass
+	ser = serial.Serial(device, 9600)
+	print("Connected to "+device)
 except:
 	print("Could not connect to Arduino.")
 	sys.exit()
@@ -52,9 +45,9 @@ plt.legend(['Please align laser.'])
 
 #plotting loop
 while True:
-	print(arduino.readline())
+	print(ser.readline())
 	try:
-		state = float(arduino.readline())/205 #division by 205 should convert arduino analog reading into units of volts
+		state = float(ser.readline())/205 #division by 205 should convert arduino analog reading into units of volts
 		if state>3 and jumping == False:
 			jumping = True
 			aligned = True
